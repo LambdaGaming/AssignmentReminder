@@ -56,9 +56,18 @@
       <DependentUpon>AssignmentList.cs</DependentUpon>
     </Compile>
     <Compile Include="AssignmentReminder.cs" />
+    <Compile Include="AssignmentManager.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AssignmentManager.Designer.cs">
+      <DependentUpon>AssignmentManager.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="AssignmentList.resx">
       <DependentUpon>AssignmentList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AssignmentManager.resx">
+      <DependentUpon>AssignmentManager.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

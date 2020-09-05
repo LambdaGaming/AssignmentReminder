@@ -4,6 +4,7 @@ using System.Diagnostics;
 using AssignmentReminder.Properties;
 using System.Xml.Linq;
 using System.Linq;
+using System.IO;
 
 namespace AssignmentReminder
 {
@@ -38,6 +39,10 @@ namespace AssignmentReminder
 				AssignmentList list = new AssignmentList();
 				list.ShowDialog();
 			} );
+			menu.MenuItems.Add( "Add Assignments", delegate {
+				AssignmentManager add = new AssignmentManager();
+				add.ShowDialog();
+			} );
 			menu.MenuItems.Add( "Exit", delegate { Application.Exit(); } );
 			return menu;
 		}
@@ -45,6 +50,7 @@ namespace AssignmentReminder
 		private static void DueNotify( NotifyIcon notify )
 		{
 			string path = Environment.GetFolderPath( Environment.SpecialFolder.ApplicationData ) + @"\AssignmentReminder\settings.xml";
+			if ( !File.Exists( path ) ) return;
 			XDocument settings = XDocument.Load( path );
 			var assignment = from c in settings.Root.Descendants( "assignment" ) select c.Element( "due" ).Value;
 			bool duetoday = false;

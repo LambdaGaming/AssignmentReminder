@@ -1,6 +1,6 @@
-﻿namespace AssignmentManager
+﻿namespace AssignmentReminder
 {
-	partial class MainWindow
+	partial class AssignmentManager
 	{
 		/// <summary>
 		/// Required designer variable.

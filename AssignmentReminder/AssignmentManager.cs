@@ -3,11 +3,11 @@ using System.IO;
 using System.Windows.Forms;
 using System.Xml;
 
-namespace AssignmentManager
+namespace AssignmentReminder
 {
-	public partial class MainWindow : Form
+	public partial class AssignmentManager : Form
 	{
-		public MainWindow()
+		public AssignmentManager()
 		{
 			InitializeComponent();
 		}
