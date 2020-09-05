@@ -28,20 +28,12 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.DateChooser = new System.Windows.Forms.DateTimePicker();
 			this.AddButton = new System.Windows.Forms.Button();
 			this.label1 = new System.Windows.Forms.Label();
 			this.NameBox = new System.Windows.Forms.TextBox();
 			this.label2 = new System.Windows.Forms.Label();
+			this.DateChooser = new System.Windows.Forms.DateTimePicker();
 			this.SuspendLayout();
-			// 
-			// DateChooser
-			// 
-			this.DateChooser.Location = new System.Drawing.Point(12, 80);
-			this.DateChooser.MinDate = new System.DateTime(2020, 9, 3, 0, 0, 0, 0);
-			this.DateChooser.Name = "DateChooser";
-			this.DateChooser.Size = new System.Drawing.Size(240, 20);
-			this.DateChooser.TabIndex = 0;
 			// 
 			// AddButton
 			// 
@@ -82,7 +74,15 @@
 			this.label2.TabIndex = 4;
 			this.label2.Text = "Assignment Name:";
 			// 
-			// MainWindow
+			// DateChooser
+			// 
+			this.DateChooser.Location = new System.Drawing.Point(12, 80);
+			this.DateChooser.MinDate = new System.DateTime(2020, 9, 3, 0, 0, 0, 0);
+			this.DateChooser.Name = "DateChooser";
+			this.DateChooser.Size = new System.Drawing.Size(240, 20);
+			this.DateChooser.TabIndex = 0;
+			// 
+			// AssignmentManager
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -94,7 +94,7 @@
 			this.Controls.Add(this.AddButton);
 			this.Controls.Add(this.DateChooser);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-			this.Name = "MainWindow";
+			this.Name = "AssignmentManager";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Add Assignment";
 			this.ResumeLayout(false);
@@ -103,12 +103,11 @@
 		}
 
 		#endregion
-
-		private System.Windows.Forms.DateTimePicker DateChooser;
 		private System.Windows.Forms.Button AddButton;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.TextBox NameBox;
 		private System.Windows.Forms.Label label2;
+		private System.Windows.Forms.DateTimePicker DateChooser;
 	}
 }
 

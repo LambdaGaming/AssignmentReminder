@@ -66,7 +66,7 @@ namespace AssignmentReminder
 			if ( duetoday )
 				notify.ShowBalloonTip( 1, "Assignments Due", "You have assignments due today. Click to view them.", ToolTipIcon.Info );
 			else
-				notify.ShowBalloonTip( 1, "Assignments Due", "You have no assignments due today.", ToolTipIcon.Info );
+				notify.ShowBalloonTip( 1, "No Assignments Due", "You have no assignments due today.", ToolTipIcon.Info );
 			notify.BalloonTipClicked += BalloonTipClicked;
 		}
 
