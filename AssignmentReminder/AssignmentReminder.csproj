@@ -62,6 +62,7 @@
     <Compile Include="AssignmentManager.Designer.cs">
       <DependentUpon>AssignmentManager.cs</DependentUpon>
     </Compile>
+    <Compile Include="ListViewColumnSorter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="AssignmentList.resx">
       <DependentUpon>AssignmentList.cs</DependentUpon>

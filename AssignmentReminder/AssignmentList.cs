@@ -7,6 +7,8 @@ namespace AssignmentReminder
 {
 	public partial class AssignmentList : Form
 	{
+		private ListViewColumnSorter sort;
+
 		public AssignmentList()
 		{
 			InitializeComponent();
@@ -18,17 +20,42 @@ namespace AssignmentReminder
 			
 			foreach ( string names in name )
 			{
-				listView.Items.Add( new ListViewItem( names ) );
+				listView.Items.Add( names );
 			}
 
 			int count = 0;
 			foreach ( string dates in due )
 			{
 				DateTime date = DateTime.FromBinary( long.Parse( dates ) );
-				ListViewItem.ListViewSubItem newlist = new ListViewItem.ListViewSubItem();
 				listView.Items[count].SubItems.Add( date.ToString() );
 				count++;
 			}
+
+			sort = new ListViewColumnSorter();
+			listView.ListViewItemSorter = sort;
+			listView.Sorting = SortOrder.Ascending;
+			listView.Sort();
+		}
+
+		private void listView_ColumnClick( object sender, ColumnClickEventArgs e )
+		{
+			if ( e.Column == sort.SortColumn )
+			{
+				if ( sort.Order == SortOrder.Ascending )
+				{
+					sort.Order = SortOrder.Descending;
+				}
+				else
+				{
+					sort.Order = SortOrder.Ascending;
+				}
+			}
+			else
+			{
+				sort.SortColumn = e.Column;
+				sort.Order = SortOrder.Ascending;
+			}
+			listView.Sort();
 		}
 	}
 }

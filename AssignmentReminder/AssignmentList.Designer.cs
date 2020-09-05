@@ -1,4 +1,6 @@
-﻿namespace AssignmentReminder
+﻿using System.Windows.Forms;
+
+namespace AssignmentReminder
 {
 	partial class AssignmentList
 	{
@@ -49,16 +51,17 @@
 			this.listView.TabIndex = 0;
 			this.listView.UseCompatibleStateImageBehavior = false;
 			this.listView.View = System.Windows.Forms.View.Details;
+			this.listView.ColumnClick += new ColumnClickEventHandler(this.listView_ColumnClick);
 			// 
 			// nameColumn
 			// 
 			this.nameColumn.Text = "Name";
-			this.nameColumn.Width = 105;
+			this.nameColumn.Width = 202;
 			// 
 			// dueColumn
 			// 
 			this.dueColumn.Text = "Due Date";
-			this.dueColumn.Width = 266;
+			this.dueColumn.Width = 169;
 			// 
 			// AssignmentList
 			// 
