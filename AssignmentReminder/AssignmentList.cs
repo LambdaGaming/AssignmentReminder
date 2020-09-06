@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Linq;
@@ -8,12 +9,13 @@ namespace AssignmentReminder
 	public partial class AssignmentList : Form
 	{
 		private ListViewColumnSorter sort;
+		private string path = Environment.GetFolderPath( Environment.SpecialFolder.ApplicationData ) + @"\AssignmentReminder\settings.xml";
 
 		public AssignmentList()
 		{
 			InitializeComponent();
+			RegisterEvents();
 
-			string path = Environment.GetFolderPath( Environment.SpecialFolder.ApplicationData ) + @"\AssignmentReminder\settings.xml";
 			XDocument settings = XDocument.Load( path );
 			var name = from c in settings.Root.Descendants( "assignment" ) select c.Element( "name" ).Value;
 			var due = from c in settings.Root.Descendants( "assignment" ) select c.Element( "due" ).Value;
@@ -37,18 +39,20 @@ namespace AssignmentReminder
 			listView.Sort();
 		}
 
-		private void listView_ColumnClick( object sender, ColumnClickEventArgs e )
+		private void RegisterEvents()
+		{
+			listView.ColumnClick += new ColumnClickEventHandler( ColumnClick );
+			listView.DoubleClick += new EventHandler( DoubleClicked );
+		}
+
+		private void ColumnClick( object sender, ColumnClickEventArgs e )
 		{
 			if ( e.Column == sort.SortColumn )
 			{
 				if ( sort.Order == SortOrder.Ascending )
-				{
 					sort.Order = SortOrder.Descending;
-				}
 				else
-				{
 					sort.Order = SortOrder.Ascending;
-				}
 			}
 			else
 			{
@@ -56,6 +60,23 @@ namespace AssignmentReminder
 				sort.Order = SortOrder.Ascending;
 			}
 			listView.Sort();
+		}
+
+		private void DoubleClicked( object sender, EventArgs e )
+		{
+			DialogResult confirm = MessageBox.Show( "Are you sure you want to delete this assignment?", "Confirm Deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Question );
+			if ( confirm == DialogResult.Yes )
+			{
+				foreach ( ListViewItem selected in listView.SelectedItems )
+				{
+					selected.Remove();
+					XDocument settings = XDocument.Load( path );
+					List<XElement> ancestors = settings.Descendants().Where( x => ( string ) x == selected.Text ).Ancestors().ToList();
+					for ( int i=0; i <= ancestors.Count - 2; i++ )
+						ancestors[i].Remove();
+					settings.Save( path );
+				}
+			}
 		}
 	}
 }
