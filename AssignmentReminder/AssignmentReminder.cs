@@ -54,17 +54,18 @@ namespace AssignmentReminder
 			XDocument settings = XDocument.Load( path );
 			var assignment = from c in settings.Root.Descendants( "assignment" ) select c.Element( "due" ).Value;
 			bool duetoday = false;
+			int dueamount = 0;
 			foreach ( string dates in assignment )
 			{
 				DateTime date = DateTime.FromBinary( long.Parse( dates ) );
 				if ( date.Date == DateTime.Today )
 				{
 					duetoday = true;
-					break;
+					dueamount++;
 				}
 			}
-			if ( duetoday )
-				notify.ShowBalloonTip( 1, "Assignments Due", "You have assignments due today. Click to view them.", ToolTipIcon.Info );
+			if ( duetoday && dueamount > 0 )
+				notify.ShowBalloonTip( 1, "Assignments Due", "You have " + dueamount.ToString() + " assignment(s) due today. Click to view them.", ToolTipIcon.Info );
 			else
 				notify.ShowBalloonTip( 1, "No Assignments Due", "You have no assignments due today.", ToolTipIcon.Info );
 			notify.BalloonTipClicked += BalloonTipClicked;
