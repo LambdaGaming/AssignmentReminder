@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Linq;
@@ -22,14 +23,26 @@ namespace AssignmentReminder
 			
 			foreach ( string names in name )
 			{
-				listView.Items.Add( names );
+				ListViewItem item = listView.Items.Add( names );
+				item.UseItemStyleForSubItems = false;
 			}
 
 			int count = 0;
 			foreach ( string dates in due )
 			{
 				DateTime date = DateTime.FromBinary( long.Parse( dates ) );
-				listView.Items[count].SubItems.Add( date.ToString() );
+				if ( date.Date == DateTime.Today )
+				{
+					ListViewItem.ListViewSubItem color = new ListViewItem.ListViewSubItem();
+					color.BackColor = Color.Red;
+					color.Text = date.ToString();
+					listView.Items[count].BackColor = Color.Red;
+					listView.Items[count].SubItems.Add( color );
+				}
+				else
+				{
+					listView.Items[count].SubItems.Add( date.ToString() );
+				}
 				count++;
 			}
 
