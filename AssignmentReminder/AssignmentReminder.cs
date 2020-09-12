@@ -10,15 +10,18 @@ namespace AssignmentReminder
 {
 	static class AssignmentReminder
 	{
+		private static NotifyIcon notify;
+
 		[STAThread]
 		static void Main()
 		{
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault( false );
 
-			NotifyIcon notify = new NotifyIcon
+			notify = new NotifyIcon
 			{
 				Icon = Resources.icon,
+				Text = "Assignment Reminder",
 				ContextMenu = GetContextMenu(),
 				Visible = true
 			};
@@ -35,6 +38,7 @@ namespace AssignmentReminder
 			process.StartInfo.FileName = path;
 
 			ContextMenu menu = new ContextMenu();
+			menu.MenuItems.Add( "Show Popup", delegate { DueNotify( notify ); } );
 			menu.MenuItems.Add( "Show Assignments", delegate {
 				AssignmentList list = new AssignmentList();
 				list.ShowDialog();
@@ -55,6 +59,8 @@ namespace AssignmentReminder
 			var assignment = from c in settings.Root.Descendants( "assignment" ) select c.Element( "due" ).Value;
 			bool duetoday = false;
 			int dueamount = 0;
+			int duesoon = 0;
+
 			foreach ( string dates in assignment )
 			{
 				DateTime date = DateTime.FromBinary( long.Parse( dates ) );
@@ -63,11 +69,19 @@ namespace AssignmentReminder
 					duetoday = true;
 					dueamount++;
 				}
+				if ( ( date.Date - DateTime.Today ).TotalDays <= 2 )
+					duesoon++;
 			}
+
 			if ( duetoday && dueamount > 0 )
 				notify.ShowBalloonTip( 1, "Assignments Due", "You have " + dueamount.ToString() + " assignment(s) due today. Click to view them.", ToolTipIcon.Info );
 			else
-				notify.ShowBalloonTip( 1, "No Assignments Due", "You have no assignments due today.", ToolTipIcon.Info );
+			{
+				if ( duesoon > 0 )
+					notify.ShowBalloonTip( 1, "No Assignments Due", "You have no assignments due today. You have " + duesoon.ToString() + " assignments due soon.", ToolTipIcon.Info );
+				else
+					notify.ShowBalloonTip( 1, "No Assignments Due", "You have no assignments due today.", ToolTipIcon.Info );
+			}
 			notify.BalloonTipClicked += BalloonTipClicked;
 		}
 

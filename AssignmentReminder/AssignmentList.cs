@@ -39,6 +39,15 @@ namespace AssignmentReminder
 					listView.Items[count].BackColor = Color.Red;
 					listView.Items[count].SubItems.Add( color );
 				}
+				else if ( ( date.Date - DateTime.Today ).TotalDays <= 2 )
+				{
+					ListViewItem.ListViewSubItem color = new ListViewItem.ListViewSubItem();
+					Color lambdaorange = Color.FromArgb( 255, 255, 89, 0 );
+					color.BackColor = lambdaorange;
+					color.Text = date.ToString();
+					listView.Items[count].BackColor = lambdaorange;
+					listView.Items[count].SubItems.Add( color );
+				}
 				else
 				{
 					listView.Items[count].SubItems.Add( date.ToString() );
