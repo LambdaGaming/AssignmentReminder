@@ -17,6 +17,7 @@ namespace AssignmentReminder
 			string xmldir = Environment.GetFolderPath( Environment.SpecialFolder.ApplicationData ) + @"\AssignmentReminder";
 			string settingsdir = xmldir + @"\settings.xml";
 			XmlDocument settings = new XmlDocument();
+			DateTime timeset = new DateTime( DateChooser.Value.Year, DateChooser.Value.Month, DateChooser.Value.Day, 23, 59, 59 );
 
 			if ( !Directory.Exists( xmldir ) )
 				Directory.CreateDirectory( xmldir );
@@ -35,7 +36,7 @@ namespace AssignmentReminder
 			itemname.InnerText = NameBox.Text;
 
 			XmlElement itemdue = settings.CreateElement( "due" );
-			itemdue.InnerText = DateChooser.Value.ToBinary().ToString();
+			itemdue.InnerText = timeset.ToBinary().ToString();
 
 			try
 			{
