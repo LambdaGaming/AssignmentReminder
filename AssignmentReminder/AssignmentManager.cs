@@ -10,6 +10,8 @@ namespace AssignmentReminder
 		public AssignmentManager()
 		{
 			InitializeComponent();
+			TimeChooser.CustomFormat = "hh:mm:ss tt";
+			TimeChooser.Format = DateTimePickerFormat.Custom;
 		}
 
 		private void AddButton_Click( object sender, EventArgs e )
@@ -17,7 +19,9 @@ namespace AssignmentReminder
 			string xmldir = Environment.GetFolderPath( Environment.SpecialFolder.ApplicationData ) + @"\AssignmentReminder";
 			string settingsdir = xmldir + @"\settings.xml";
 			XmlDocument settings = new XmlDocument();
-			DateTime timeset = new DateTime( DateChooser.Value.Year, DateChooser.Value.Month, DateChooser.Value.Day, 23, 59, 59 );
+			DateTime dayvalue = DateChooser.Value;
+			DateTime timevalue = TimeChooser.Value;
+			DateTime timeset = new DateTime( dayvalue.Year, dayvalue.Month, dayvalue.Day, timevalue.Hour, timevalue.Minute, timevalue.Second );
 
 			if ( !Directory.Exists( xmldir ) )
 				Directory.CreateDirectory( xmldir );
