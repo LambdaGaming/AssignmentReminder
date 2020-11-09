@@ -31,6 +31,7 @@ namespace AssignmentReminder
 			foreach ( string dates in due )
 			{
 				DateTime date = DateTime.FromBinary( long.Parse( dates ) );
+				TimeSpan daysleft = date.Date - DateTime.Today;
 				if ( date.Date == DateTime.Today )
 				{
 					ListViewItem.ListViewSubItem color = new ListViewItem.ListViewSubItem();
@@ -39,13 +40,22 @@ namespace AssignmentReminder
 					listView.Items[count].BackColor = Color.Red;
 					listView.Items[count].SubItems.Add( color );
 				}
-				else if ( ( date.Date - DateTime.Today ).TotalDays <= 2 )
+				else if ( daysleft.TotalDays <= 2 && daysleft.TotalDays > 0 )
 				{
 					ListViewItem.ListViewSubItem color = new ListViewItem.ListViewSubItem();
 					Color lambdaorange = Color.FromArgb( 255, 255, 89, 0 );
 					color.BackColor = lambdaorange;
 					color.Text = date.ToString();
 					listView.Items[count].BackColor = lambdaorange;
+					listView.Items[count].SubItems.Add( color );
+				}
+				else if ( daysleft.TotalDays < 0 )
+				{
+					ListViewItem.ListViewSubItem color = new ListViewItem.ListViewSubItem();
+					color.BackColor = Color.Red;
+					color.Text = date.ToString();
+					listView.Items[count].Text = "!!! " + listView.Items[count].Text + " !!!";
+					listView.Items[count].BackColor = Color.Red;
 					listView.Items[count].SubItems.Add( color );
 				}
 				else
@@ -84,6 +94,17 @@ namespace AssignmentReminder
 			listView.Sort();
 		}
 
+		private string FormatText( string text )
+		{
+			if ( text.StartsWith( "!!!" ) )
+			{
+				string trim = text.Trim( new char[] { '!' } );
+				string nospace = trim.Trim();
+				return nospace;
+			}
+			return text;
+		}
+
 		private void DoubleClicked( object sender, EventArgs e )
 		{
 			DialogResult confirm = MessageBox.Show( "Are you sure you want to delete this assignment?", "Confirm Deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Question );
@@ -91,11 +112,11 @@ namespace AssignmentReminder
 			{
 				foreach ( ListViewItem selected in listView.SelectedItems )
 				{
-					selected.Remove();
 					XDocument settings = XDocument.Load( path );
-					List<XElement> ancestors = settings.Descendants().Where( x => ( string ) x == selected.Text ).Ancestors().ToList();
+					List<XElement> ancestors = settings.Descendants().Where( x => ( string ) x == FormatText( selected.Text ) ).Ancestors().ToList();
 					for ( int i=0; i <= ancestors.Count - 2; i++ )
 						ancestors[i].Remove();
+					selected.Remove();
 					settings.Save( path );
 				}
 			}
