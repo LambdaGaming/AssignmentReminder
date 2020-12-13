@@ -61,22 +61,29 @@ namespace AssignmentReminder
 			int dueamount = 0;
 			int duesoon = 0;
 			int overdue = 0;
+			int totalassignments = 0;
 
 			foreach ( string dates in assignment )
 			{
 				DateTime date = DateTime.FromBinary( long.Parse( dates ) );
 				TimeSpan daysleft = date.Date - DateTime.Today;
+
 				if ( date.Date == DateTime.Today )
 				{
 					duetoday = true;
 					dueamount++;
 				}
+
 				if ( daysleft.TotalDays <= 2 && daysleft.TotalDays > 0 )
 					duesoon++;
+
 				if ( daysleft.TotalDays < 0 )
 					overdue++;
+
+				totalassignments++;
 			}
 
+			if ( totalassignments <= 0 ) return; // Don't show popup if there aren't any assignments
 			if ( duetoday && dueamount > 0 )
 				notify.ShowBalloonTip( 1, "Assignments Due", "You have " + dueamount.ToString() + " assignment(s) due today. Click to view them.", ToolTipIcon.Info );
 			else
