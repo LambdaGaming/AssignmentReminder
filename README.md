@@ -6,3 +6,6 @@
  - Right-click the program icon in the taskbar to display the context menu. From there you can choose to display the taskbar notification again, add assignments, view assignments, or close the program.
  - To delete a completed assignment, double click the entry for it in the assignment viewer.
  - If you want to delete all assignments at once, navigate to %AppData%/AssignmentReminder and delete the settings.xml file.
+
+# Issues & Pull Requests
+ If you would like to contribute to this repository by creating an issue or pull request, please refer to the [contributing guidelines.](https://lambdagaming.github.io/contributing.html)
