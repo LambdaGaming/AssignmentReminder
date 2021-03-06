@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using System.Xml;
 using System.Xml.Linq;
 
 namespace AssignmentReminder
@@ -17,10 +19,32 @@ namespace AssignmentReminder
 			InitializeComponent();
 			RegisterEvents();
 
+			string xmldir = Environment.GetFolderPath( Environment.SpecialFolder.ApplicationData ) + @"\AssignmentReminder";
+			string settingsdir = xmldir + @"\settings.xml";
+			XmlDocument tempxml = new XmlDocument();
+
+			if ( !Directory.Exists( xmldir ) )
+				Directory.CreateDirectory( xmldir );
+
+			if ( !File.Exists( settingsdir ) )
+			{
+				XmlElement init = tempxml.CreateElement( "settings" );
+				tempxml.AppendChild( init );
+				tempxml.Save( settingsdir );
+				MessageBox.Show( "No assignments were found because the settings.xml file didn't exist.", "No Assignments", MessageBoxButtons.OK, MessageBoxIcon.Error );
+				return;
+			}
+
 			XDocument settings = XDocument.Load( path );
 			var name = from c in settings.Root.Descendants( "assignment" ) select c.Element( "name" ).Value;
 			var due = from c in settings.Root.Descendants( "assignment" ) select c.Element( "due" ).Value;
 			
+			if ( name.Count() == 0 )
+			{
+				MessageBox.Show( "No assignments were found.", "No Assignments", MessageBoxButtons.OK, MessageBoxIcon.Error );
+				return;
+			}
+
 			foreach ( string names in name )
 			{
 				ListViewItem item = listView.Items.Add( names );
