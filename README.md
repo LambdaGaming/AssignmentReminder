@@ -7,5 +7,5 @@
  - To delete a completed assignment, double click the entry for it in the assignment viewer.
  - If you want to delete all assignments at once, navigate to %AppData%/AssignmentReminder and delete the settings.xml file.
 
-# Issues & Pull Requests
+## Issues & Pull Requests
  If you would like to contribute to this repository by creating an issue or pull request, please refer to the [contributing guidelines.](https://lambdagaming.github.io/contributing.html)

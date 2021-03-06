@@ -1,7 +1,9 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace AssignmentReminder
 {
@@ -31,6 +33,18 @@ namespace AssignmentReminder
 				XmlElement init = settings.CreateElement( "settings" );
 				settings.AppendChild( init );
 				settings.Save( settingsdir );
+			}
+
+			XDocument checkname = XDocument.Load( settingsdir );
+			var names = from c in checkname.Root.Descendants( "assignment" ) select c.Element( "name" ).Value;
+
+			foreach ( string name in names )
+			{
+				if ( NameBox.Text == name )
+				{
+					MessageBox.Show( "An assignment with this name already exists. Please choose a different name.", "Name Already Taken", MessageBoxButtons.OK, MessageBoxIcon.Error );
+					return;
+				}
 			}
 
 			settings.Load( settingsdir );
