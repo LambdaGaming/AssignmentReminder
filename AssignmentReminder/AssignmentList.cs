@@ -52,6 +52,7 @@ namespace AssignmentReminder
 			}
 
 			int count = 0;
+			string textFormat = "MM/dd/yyyy hh:mm:ss tt";
 			foreach ( string dates in due )
 			{
 				DateTime date = DateTime.FromBinary( long.Parse( dates ) );
@@ -60,16 +61,16 @@ namespace AssignmentReminder
 				{
 					ListViewItem.ListViewSubItem color = new ListViewItem.ListViewSubItem();
 					color.BackColor = Color.Red;
-					color.Text = date.ToString();
+					color.Text = date.ToString( textFormat );
 					listView.Items[count].BackColor = Color.Red;
 					listView.Items[count].SubItems.Add( color );
 				}
 				else if ( daysleft.TotalDays <= 2 && daysleft.TotalDays > 0 )
 				{
 					ListViewItem.ListViewSubItem color = new ListViewItem.ListViewSubItem();
-					Color lambdaorange = Color.FromArgb( 255, 255, 89, 0 );
+					Color lambdaorange = Color.FromArgb( 255, 255, 89, 0 ); // #FF5900
 					color.BackColor = lambdaorange;
-					color.Text = date.ToString();
+					color.Text = date.ToString( textFormat );
 					listView.Items[count].BackColor = lambdaorange;
 					listView.Items[count].SubItems.Add( color );
 				}
@@ -77,14 +78,14 @@ namespace AssignmentReminder
 				{
 					ListViewItem.ListViewSubItem color = new ListViewItem.ListViewSubItem();
 					color.BackColor = Color.Red;
-					color.Text = date.ToString();
+					color.Text = date.ToString( textFormat );
 					listView.Items[count].Text = "!!! " + listView.Items[count].Text + " !!!";
 					listView.Items[count].BackColor = Color.Red;
 					listView.Items[count].SubItems.Add( color );
 				}
 				else
 				{
-					listView.Items[count].SubItems.Add( date.ToString() );
+					listView.Items[count].SubItems.Add( date.ToString( textFormat ) );
 				}
 				count++;
 			}
