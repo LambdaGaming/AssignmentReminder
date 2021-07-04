@@ -38,11 +38,17 @@ namespace AssignmentReminder
 			XDocument checkname = XDocument.Load( settingsdir );
 			var names = from c in checkname.Root.Descendants( "assignment" ) select c.Element( "name" ).Value;
 
+			if ( NameBox.Text.Contains( "!" ) )
+			{
+				MessageBox.Show( "The character '!' is not allowed. Please remove it and try again.", "Illegal character", MessageBoxButtons.OK, MessageBoxIcon.Error );
+				return;
+			}
+
 			foreach ( string name in names )
 			{
 				if ( NameBox.Text == name )
 				{
-					MessageBox.Show( "An assignment with this name already exists. Please choose a different name.", "Name Already Taken", MessageBoxButtons.OK, MessageBoxIcon.Error );
+					MessageBox.Show( "An assignment with this name already exists. Please choose a different name.", "Name already taken", MessageBoxButtons.OK, MessageBoxIcon.Error );
 					return;
 				}
 			}

@@ -53,7 +53,7 @@
 			// 
 			this.label1.AutoSize = true;
 			this.label1.ForeColor = System.Drawing.Color.White;
-			this.label1.Location = new System.Drawing.Point(12, 64);
+			this.label1.Location = new System.Drawing.Point(12, 63);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(56, 13);
 			this.label1.TabIndex = 2;
@@ -78,7 +78,7 @@
 			// 
 			// DateChooser
 			// 
-			this.DateChooser.Location = new System.Drawing.Point(12, 80);
+			this.DateChooser.Location = new System.Drawing.Point(12, 79);
 			this.DateChooser.MinDate = new System.DateTime(2020, 9, 3, 0, 0, 0, 0);
 			this.DateChooser.Name = "DateChooser";
 			this.DateChooser.Size = new System.Drawing.Size(240, 20);
