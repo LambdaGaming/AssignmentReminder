@@ -5,12 +5,14 @@ using AssignmentReminder.Properties;
 using System.Xml.Linq;
 using System.Linq;
 using System.IO;
+using System.Timers;
 
 namespace AssignmentReminder
 {
 	static class AssignmentReminder
 	{
 		private static NotifyIcon notify;
+		public static System.Timers.Timer closetimer = new System.Timers.Timer( 60000 );
 
 		[STAThread]
 		static void Main()
@@ -27,8 +29,16 @@ namespace AssignmentReminder
 			};
 			DueNotify( notify );
 
+			closetimer.Elapsed += TimerEnd;
+			closetimer.Start();
+
 			Application.ApplicationExit += delegate { notify.Dispose(); };
 			Application.Run();
+		}
+
+		private static void TimerEnd( object obj, ElapsedEventArgs e )
+		{
+			Application.Exit();
 		}
 
 		private static ContextMenu GetContextMenu()
@@ -96,6 +106,7 @@ namespace AssignmentReminder
 					notify.ShowBalloonTip( 1, "No Assignments Due", "You have no assignments due today.", ToolTipIcon.Info );
 			}
 			notify.BalloonTipClicked += BalloonTipClicked;
+			closetimer.Stop();
 		}
 
 		private static void BalloonTipClicked( object sender, EventArgs e )

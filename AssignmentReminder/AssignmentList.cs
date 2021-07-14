@@ -95,6 +95,8 @@ namespace AssignmentReminder
 			sort.SortColumn = 1; // Sorts the due date column to show nearest due dates at the top
 			sort.Order = SortOrder.Ascending;
 			listView.Sort();
+
+			AssignmentReminder.closetimer.Stop();
 		}
 
 		private void RegisterEvents()
