@@ -96,7 +96,7 @@ namespace AssignmentReminder
 			sort.Order = SortOrder.Ascending;
 			listView.Sort();
 
-			AssignmentReminder.closetimer.Stop();
+			AssignmentReminder.CloseTimer.Stop();
 		}
 
 		private void RegisterEvents()

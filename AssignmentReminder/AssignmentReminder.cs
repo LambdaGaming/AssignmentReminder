@@ -12,7 +12,7 @@ namespace AssignmentReminder
 	static class AssignmentReminder
 	{
 		private static NotifyIcon notify;
-		public static System.Timers.Timer closetimer = new System.Timers.Timer( 60000 );
+		public static System.Timers.Timer CloseTimer = new System.Timers.Timer( 60000 );
 
 		[STAThread]
 		static void Main()
@@ -29,8 +29,8 @@ namespace AssignmentReminder
 			};
 			DueNotify( notify );
 
-			closetimer.Elapsed += TimerEnd;
-			closetimer.Start();
+			CloseTimer.Elapsed += TimerEnd;
+			CloseTimer.Start();
 
 			Application.ApplicationExit += delegate { notify.Dispose(); };
 			Application.Run();
@@ -95,7 +95,9 @@ namespace AssignmentReminder
 
 			if ( totalassignments <= 0 ) return; // Don't show popup if there aren't any assignments
 			if ( duetoday && dueamount > 0 )
+			{
 				notify.ShowBalloonTip( 1, "Assignments Due", "You have " + dueamount.ToString() + " assignment(s) due today. Click to view them.", ToolTipIcon.Info );
+			}
 			else
 			{
 				if ( overdue > 0 )
@@ -106,7 +108,7 @@ namespace AssignmentReminder
 					notify.ShowBalloonTip( 1, "No Assignments Due", "You have no assignments due today.", ToolTipIcon.Info );
 			}
 			notify.BalloonTipClicked += BalloonTipClicked;
-			closetimer.Stop();
+			CloseTimer.Stop();
 		}
 
 		private static void BalloonTipClicked( object sender, EventArgs e )

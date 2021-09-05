@@ -14,7 +14,7 @@ namespace AssignmentReminder
 			InitializeComponent();
 			TimeChooser.CustomFormat = "hh:mm:ss tt";
 			TimeChooser.Format = DateTimePickerFormat.Custom;
-			AssignmentReminder.closetimer.Stop();
+			AssignmentReminder.CloseTimer.Stop();
 		}
 
 		private void AddButton_Click( object sender, EventArgs e )
