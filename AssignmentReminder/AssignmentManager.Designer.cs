@@ -126,12 +126,12 @@
 		}
 
 		#endregion
-		private System.Windows.Forms.Button AddButton;
 		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.TextBox NameBox;
 		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.DateTimePicker DateChooser;
 		private System.Windows.Forms.Label label3;
+		public System.Windows.Forms.TextBox NameBox;
+		public System.Windows.Forms.Button AddButton;
+		private System.Windows.Forms.DateTimePicker DateChooser;
 		private System.Windows.Forms.DateTimePicker TimeChooser;
 	}
 }

@@ -13,6 +13,8 @@ namespace AssignmentReminder
 	{
 		private static NotifyIcon notify;
 		public static System.Timers.Timer CloseTimer = new System.Timers.Timer( 60000 );
+		public static AssignmentList ListWindow = null;
+		public static AssignmentManager ManagerWindow = null;
 
 		[STAThread]
 		static void Main()
@@ -50,12 +52,28 @@ namespace AssignmentReminder
 			ContextMenu menu = new ContextMenu();
 			menu.MenuItems.Add( "Show Popup", delegate { DueNotify( notify ); } );
 			menu.MenuItems.Add( "Show Assignments", delegate {
-				AssignmentList list = new AssignmentList();
-				list.ShowDialog();
+				if ( ListWindow == null )
+				{
+					AssignmentList list = new AssignmentList();
+					list.ShowDialog();
+				}
+				else
+				{
+					ListWindow.Visible = true;
+					ListWindow.BringToFront();
+				}
 			} );
 			menu.MenuItems.Add( "Add Assignments", delegate {
-				AssignmentManager add = new AssignmentManager();
-				add.ShowDialog();
+				if ( ManagerWindow == null )
+				{
+					AssignmentManager add = new AssignmentManager();
+					add.ShowDialog();
+				}
+				else
+				{
+					ManagerWindow.Visible = true;
+					ManagerWindow.BringToFront();
+				}
 			} );
 			menu.MenuItems.Add( "Exit", delegate { Application.Exit(); } );
 			return menu;
@@ -113,8 +131,16 @@ namespace AssignmentReminder
 
 		private static void BalloonTipClicked( object sender, EventArgs e )
 		{
-			AssignmentList list = new AssignmentList();
-			list.ShowDialog();
+			if ( ListWindow == null )
+			{
+				AssignmentList list = new AssignmentList();
+				list.ShowDialog();
+			}
+			else
+			{
+				ListWindow.Visible = true;
+				ListWindow.BringToFront();
+			}
 		}
 	}
 }

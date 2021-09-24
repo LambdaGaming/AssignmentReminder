@@ -88,6 +88,9 @@ namespace AssignmentReminder
 					listView.Items[count].SubItems.Add( date.ToString( textFormat ) );
 				}
 				count++;
+
+				AssignmentReminder.ListWindow = this;
+				FormClosed += delegate { AssignmentReminder.ListWindow = null; };
 			}
 
 			sort = new ListViewColumnSorter();
@@ -122,7 +125,7 @@ namespace AssignmentReminder
 			listView.Sort();
 		}
 
-		private string FormatText( string text )
+		public static string FormatText( string text )
 		{
 			if ( text.StartsWith( "!!!" ) )
 			{
@@ -133,20 +136,49 @@ namespace AssignmentReminder
 			return text;
 		}
 
-		private void DoubleClicked( object sender, EventArgs e )
+		private ListViewItem GetSelectedItem()
+		{
+			return listView.SelectedItems[0];
+		}
+
+		private void DeleteAssignment()
 		{
 			DialogResult confirm = MessageBox.Show( "Are you sure you want to delete this assignment?", "Confirm Deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Question );
 			if ( confirm == DialogResult.Yes )
 			{
-				foreach ( ListViewItem selected in listView.SelectedItems )
-				{
-					XDocument settings = XDocument.Load( path );
-					List<XElement> ancestors = settings.Descendants().Where( x => ( string ) x == FormatText( selected.Text ) ).Ancestors().ToList();
-					for ( int i=0; i <= ancestors.Count - 2; i++ )
-						ancestors[i].Remove();
-					selected.Remove();
-					settings.Save( path );
-				}
+				ListViewItem selected = GetSelectedItem();
+				XDocument settings = XDocument.Load( path );
+				List<XElement> ancestors = settings.Descendants().Where( x => ( string ) x == FormatText( selected.Text ) ).Ancestors().ToList();
+				for ( int i = 0; i <= ancestors.Count - 2; i++ )
+					ancestors[i].Remove();
+				selected.Remove();
+				settings.Save( path );
+			}
+		}
+
+		private void DoubleClicked( object sender, EventArgs e )
+		{
+			DeleteAssignment();
+		}
+
+		private void OnMouseClick( object sender, MouseEventArgs e )
+		{
+			if ( e.Button == MouseButtons.Right )
+			{
+				ContextMenu menu = new ContextMenu();
+				menu.MenuItems.Add( "Delete", delegate {
+					DeleteAssignment();
+				} );
+				menu.MenuItems.Add( "Edit Assignment", delegate {
+					ListViewItem selected = GetSelectedItem();
+					AssignmentManager add = new AssignmentManager();
+					add.Editing = true;
+					add.Text = "Edit Assignment";
+					add.AddButton.Text = "Confirm Changes";
+					add.NameBox.Text = selected.Text;
+					add.ShowDialog();
+				} );
+				menu.Show( this, PointToClient( Cursor.Position ) );
 			}
 		}
 	}

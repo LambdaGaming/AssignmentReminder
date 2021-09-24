@@ -44,14 +44,17 @@ namespace AssignmentReminder
             this.dueColumn});
 			this.listView.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.listView.ForeColor = System.Drawing.Color.White;
+			this.listView.FullRowSelect = true;
 			this.listView.GridLines = true;
 			this.listView.HideSelection = false;
 			this.listView.Location = new System.Drawing.Point(0, 0);
+			this.listView.MultiSelect = false;
 			this.listView.Name = "listView";
 			this.listView.Size = new System.Drawing.Size(375, 450);
 			this.listView.TabIndex = 0;
 			this.listView.UseCompatibleStateImageBehavior = false;
 			this.listView.View = System.Windows.Forms.View.Details;
+			this.listView.MouseClick += new System.Windows.Forms.MouseEventHandler(this.OnMouseClick);
 			// 
 			// nameColumn
 			// 
@@ -79,10 +82,9 @@ namespace AssignmentReminder
 		}
 
 		#endregion
-
-		private System.Windows.Forms.ListView listView;
 		private System.Windows.Forms.ColumnHeader nameColumn;
 		private System.Windows.Forms.ColumnHeader dueColumn;
+		public ListView listView;
 	}
 }
 

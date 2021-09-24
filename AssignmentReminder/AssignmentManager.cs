@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -9,12 +10,16 @@ namespace AssignmentReminder
 {
 	public partial class AssignmentManager : Form
 	{
+		public bool Editing = false;
+
 		public AssignmentManager()
 		{
 			InitializeComponent();
 			TimeChooser.CustomFormat = "hh:mm:ss tt";
 			TimeChooser.Format = DateTimePickerFormat.Custom;
 			AssignmentReminder.CloseTimer.Stop();
+			AssignmentReminder.ManagerWindow = this;
+			FormClosed += delegate { AssignmentReminder.ManagerWindow = null; };
 		}
 
 		private void AddButton_Click( object sender, EventArgs e )
@@ -43,6 +48,16 @@ namespace AssignmentReminder
 			{
 				MessageBox.Show( "The character '!' is not allowed. Please remove it and try again.", "Illegal character", MessageBoxButtons.OK, MessageBoxIcon.Error );
 				return;
+			}
+
+			if ( Editing )
+			{
+				ListViewItem selected = AssignmentReminder.ListWindow.listView.SelectedItems[0];
+				List<XElement> ancestors = checkname.Descendants().Where( x => ( string ) x == AssignmentList.FormatText( selected.Text ) ).Ancestors().ToList();
+				for ( int i = 0; i <= ancestors.Count - 2; i++ )
+					ancestors[i].Remove();
+				selected.Remove();
+				checkname.Save( settingsdir );
 			}
 
 			foreach ( string name in names )
