@@ -84,7 +84,8 @@ namespace AssignmentReminder
 				newitem.AppendChild( itemdue );
 				settings.DocumentElement.AppendChild( newitem );
 				settings.Save( settingsdir );
-				MessageBox.Show( "Successfully created assignment.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information );
+				string message = Editing ? "updated" : "created";
+				MessageBox.Show( "Successfully " + message + " assignment.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information );
 			}
 			catch( Exception ex )
 			{
