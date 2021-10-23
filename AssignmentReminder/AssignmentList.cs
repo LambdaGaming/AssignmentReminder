@@ -12,7 +12,7 @@ namespace AssignmentReminder
 	public partial class AssignmentList : Form
 	{
 		private ListViewColumnSorter sort;
-		private string path = Environment.GetFolderPath( Environment.SpecialFolder.ApplicationData ) + @"\AssignmentReminder\settings.xml";
+		private string path = Environment.GetFolderPath( Environment.SpecialFolder.ApplicationData ) + @"\AssignmentReminder\assignments.xml";
 
 		public AssignmentList()
 		{
@@ -20,7 +20,7 @@ namespace AssignmentReminder
 			RegisterEvents();
 
 			string xmldir = Environment.GetFolderPath( Environment.SpecialFolder.ApplicationData ) + @"\AssignmentReminder";
-			string settingsdir = xmldir + @"\settings.xml";
+			string settingsdir = xmldir + @"\assignments.xml";
 			XmlDocument tempxml = new XmlDocument();
 
 			if ( !Directory.Exists( xmldir ) )
@@ -31,7 +31,7 @@ namespace AssignmentReminder
 				XmlElement init = tempxml.CreateElement( "settings" );
 				tempxml.AppendChild( init );
 				tempxml.Save( settingsdir );
-				MessageBox.Show( "No assignments were found because the settings.xml file didn't exist.", "No Assignments", MessageBoxButtons.OK, MessageBoxIcon.Error );
+				MessageBox.Show( "No assignments were found because the assignments.xml file didn't exist.", "No Assignments", MessageBoxButtons.OK, MessageBoxIcon.Error );
 				return;
 			}
 

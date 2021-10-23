@@ -81,7 +81,7 @@ namespace AssignmentReminder
 
 		private static void DueNotify( NotifyIcon notify )
 		{
-			string path = Environment.GetFolderPath( Environment.SpecialFolder.ApplicationData ) + @"\AssignmentReminder\settings.xml";
+			string path = Environment.GetFolderPath( Environment.SpecialFolder.ApplicationData ) + @"\AssignmentReminder\assignments.xml";
 			if ( !File.Exists( path ) ) return;
 			XDocument settings = XDocument.Load( path );
 			var assignment = from c in settings.Root.Descendants( "assignment" ) select c.Element( "due" ).Value;

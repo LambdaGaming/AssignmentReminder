@@ -25,7 +25,7 @@ namespace AssignmentReminder
 		private void AddButton_Click( object sender, EventArgs e )
 		{
 			string xmldir = Environment.GetFolderPath( Environment.SpecialFolder.ApplicationData ) + @"\AssignmentReminder";
-			string settingsdir = xmldir + @"\settings.xml";
+			string settingsdir = xmldir + @"\assignments.xml";
 			XmlDocument settings = new XmlDocument();
 			DateTime dayvalue = DateChooser.Value;
 			DateTime timevalue = TimeChooser.Value;
