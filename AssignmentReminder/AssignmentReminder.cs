@@ -2,9 +2,6 @@
 using System.Windows.Forms;
 using System.Diagnostics;
 using AssignmentReminder.Properties;
-using System.Xml.Linq;
-using System.Linq;
-using System.IO;
 using System.Timers;
 
 namespace AssignmentReminder
@@ -15,6 +12,7 @@ namespace AssignmentReminder
 		public static System.Timers.Timer CloseTimer = new System.Timers.Timer( 60000 );
 		public static AssignmentList ListWindow = null;
 		public static AssignmentManager ManagerWindow = null;
+		public static AssignmentFile MainFile = null;
 
 		[STAThread]
 		static void Main()
@@ -22,8 +20,7 @@ namespace AssignmentReminder
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault( false );
 
-			notify = new NotifyIcon
-			{
+			notify = new NotifyIcon {
 				Icon = Resources.icon,
 				Text = "Assignment Reminder",
 				ContextMenu = GetContextMenu(),
@@ -33,6 +30,7 @@ namespace AssignmentReminder
 
 			CloseTimer.Elapsed += TimerEnd;
 			CloseTimer.Start();
+			AssignmentFile.Load();
 
 			Application.ApplicationExit += delegate { notify.Dispose(); };
 			Application.Run();
@@ -81,19 +79,15 @@ namespace AssignmentReminder
 
 		private static void DueNotify( NotifyIcon notify )
 		{
-			string path = Environment.GetFolderPath( Environment.SpecialFolder.ApplicationData ) + @"\AssignmentReminder\assignments.xml";
-			if ( !File.Exists( path ) ) return;
-			XDocument settings = XDocument.Load( path );
-			var assignment = from c in settings.Root.Descendants( "assignment" ) select c.Element( "due" ).Value;
 			bool duetoday = false;
 			int dueamount = 0;
 			int duesoon = 0;
 			int overdue = 0;
 			int totalassignments = 0;
 
-			foreach ( string dates in assignment )
+			foreach ( Assignment assignment in MainFile.AllAssignments )
 			{
-				DateTime date = DateTime.FromBinary( long.Parse( dates ) );
+				DateTime date = assignment.DueDate;
 				TimeSpan daysleft = date.Date - DateTime.Today;
 
 				if ( date.Date == DateTime.Today )

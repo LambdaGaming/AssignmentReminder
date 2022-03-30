@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Windows.Forms;
-using System.Xml;
-using System.Xml.Linq;
 
 namespace AssignmentReminder
 {
@@ -24,25 +19,9 @@ namespace AssignmentReminder
 
 		private void AddButton_Click( object sender, EventArgs e )
 		{
-			string xmldir = Environment.GetFolderPath( Environment.SpecialFolder.ApplicationData ) + @"\AssignmentReminder";
-			string settingsdir = xmldir + @"\assignments.xml";
-			XmlDocument settings = new XmlDocument();
 			DateTime dayvalue = DateChooser.Value;
 			DateTime timevalue = TimeChooser.Value;
 			DateTime timeset = new DateTime( dayvalue.Year, dayvalue.Month, dayvalue.Day, timevalue.Hour, timevalue.Minute, timevalue.Second );
-
-			if ( !Directory.Exists( xmldir ) )
-				Directory.CreateDirectory( xmldir );
-
-			if ( !File.Exists( settingsdir ) )
-			{
-				XmlElement init = settings.CreateElement( "settings" );
-				settings.AppendChild( init );
-				settings.Save( settingsdir );
-			}
-
-			XDocument checkname = XDocument.Load( settingsdir );
-			var names = from c in checkname.Root.Descendants( "assignment" ) select c.Element( "name" ).Value;
 
 			if ( NameBox.Text.Contains( "!" ) )
 			{
@@ -53,37 +32,23 @@ namespace AssignmentReminder
 			if ( Editing )
 			{
 				ListViewItem selected = AssignmentReminder.ListWindow.listView.SelectedItems[0];
-				List<XElement> ancestors = checkname.Descendants().Where( x => ( string ) x == AssignmentList.FormatText( selected.Text ) ).Ancestors().ToList();
-				for ( int i = 0; i <= ancestors.Count - 2; i++ )
-					ancestors[i].Remove();
 				selected.Remove();
-				checkname.Save( settingsdir );
+				AssignmentFile.RemoveAssignment( AssignmentList.FormatText( selected.Text ) );
 			}
 
-			foreach ( string name in names )
+			foreach ( Assignment assignment in AssignmentReminder.MainFile.AllAssignments )
 			{
-				if ( NameBox.Text == name )
+				if ( assignment.Name == NameBox.Text )
 				{
 					MessageBox.Show( "An assignment with this name already exists. Please choose a different name.", "Name already taken", MessageBoxButtons.OK, MessageBoxIcon.Error );
 					return;
 				}
 			}
 
-			settings.Load( settingsdir );
-			XmlElement newitem = settings.CreateElement( "assignment" );
-
-			XmlElement itemname = settings.CreateElement( "name" );
-			itemname.InnerText = NameBox.Text;
-
-			XmlElement itemdue = settings.CreateElement( "due" );
-			itemdue.InnerText = timeset.ToBinary().ToString();
-
 			try
 			{
-				newitem.AppendChild( itemname );
-				newitem.AppendChild( itemdue );
-				settings.DocumentElement.AppendChild( newitem );
-				settings.Save( settingsdir );
+				AssignmentFile.AddAssignment( NameBox.Text, timeset );
+				AssignmentFile.Save();
 				string message = Editing ? "updated" : "created";
 				MessageBox.Show( "Successfully " + message + " assignment.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information );
 			}

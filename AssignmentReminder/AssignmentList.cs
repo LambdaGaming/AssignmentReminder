@@ -1,61 +1,38 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
-using System.Linq;
 using System.Windows.Forms;
-using System.Xml;
-using System.Xml.Linq;
 
 namespace AssignmentReminder
 {
 	public partial class AssignmentList : Form
 	{
 		private ListViewColumnSorter sort;
-		private string path = Environment.GetFolderPath( Environment.SpecialFolder.ApplicationData ) + @"\AssignmentReminder\assignments.xml";
 
 		public AssignmentList()
 		{
 			InitializeComponent();
 			RegisterEvents();
 
-			string xmldir = Environment.GetFolderPath( Environment.SpecialFolder.ApplicationData ) + @"\AssignmentReminder";
-			string settingsdir = xmldir + @"\assignments.xml";
-			XmlDocument tempxml = new XmlDocument();
-
-			if ( !Directory.Exists( xmldir ) )
-				Directory.CreateDirectory( xmldir );
-
-			if ( !File.Exists( settingsdir ) )
+			if ( AssignmentReminder.MainFile == null )
 			{
-				XmlElement init = tempxml.CreateElement( "settings" );
-				tempxml.AppendChild( init );
-				tempxml.Save( settingsdir );
-				MessageBox.Show( "No assignments were found because the assignments.xml file didn't exist.", "No Assignments", MessageBoxButtons.OK, MessageBoxIcon.Error );
+				MessageBox.Show( "No assignments were found because the assignments.json file doesn't exist.", "No Assignments", MessageBoxButtons.OK, MessageBoxIcon.Error );
 				return;
 			}
 
-			XDocument settings = XDocument.Load( path );
-			var name = from c in settings.Root.Descendants( "assignment" ) select c.Element( "name" ).Value;
-			var due = from c in settings.Root.Descendants( "assignment" ) select c.Element( "due" ).Value;
-			
-			if ( name.Count() == 0 )
+			if ( AssignmentReminder.MainFile.AllAssignments.Count == 0 )
 			{
 				MessageBox.Show( "No assignments were found.", "No Assignments", MessageBoxButtons.OK, MessageBoxIcon.Error );
 				return;
 			}
 
-			foreach ( string names in name )
-			{
-				ListViewItem item = listView.Items.Add( names );
-				item.UseItemStyleForSubItems = false;
-			}
-
 			int count = 0;
 			string textFormat = "MM/dd/yyyy hh:mm:ss tt";
-			foreach ( string dates in due )
+			foreach ( Assignment assignment in AssignmentReminder.MainFile.AllAssignments )
 			{
-				DateTime date = DateTime.FromBinary( long.Parse( dates ) );
+				ListViewItem item = listView.Items.Add( assignment.Name );
+				item.UseItemStyleForSubItems = false;
+
+				DateTime date = assignment.DueDate;
 				TimeSpan daysleft = date.Date - DateTime.Today;
 				if ( date.Date == DateTime.Today )
 				{
@@ -136,23 +113,15 @@ namespace AssignmentReminder
 			return text;
 		}
 
-		private ListViewItem GetSelectedItem()
-		{
-			return listView.SelectedItems[0];
-		}
-
 		private void DeleteAssignment()
 		{
 			DialogResult confirm = MessageBox.Show( "Are you sure you want to delete this assignment?", "Confirm Deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Question );
 			if ( confirm == DialogResult.Yes )
 			{
-				ListViewItem selected = GetSelectedItem();
-				XDocument settings = XDocument.Load( path );
-				List<XElement> ancestors = settings.Descendants().Where( x => ( string ) x == FormatText( selected.Text ) ).Ancestors().ToList();
-				for ( int i = 0; i <= ancestors.Count - 2; i++ )
-					ancestors[i].Remove();
+				ListViewItem selected = listView.SelectedItems[0];
 				selected.Remove();
-				settings.Save( path );
+				AssignmentFile.RemoveAssignment( FormatText( selected.Text ) );
+				AssignmentFile.Save();
 			}
 		}
 
@@ -170,7 +139,7 @@ namespace AssignmentReminder
 					DeleteAssignment();
 				} );
 				menu.MenuItems.Add( "Edit Assignment", delegate {
-					ListViewItem selected = GetSelectedItem();
+					ListViewItem selected = listView.SelectedItems[0];
 					AssignmentManager add = new AssignmentManager();
 					add.Editing = true;
 					add.Text = "Edit Assignment";
