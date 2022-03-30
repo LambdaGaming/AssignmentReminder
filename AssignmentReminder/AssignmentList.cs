@@ -25,6 +25,12 @@ namespace AssignmentReminder
 				return;
 			}
 
+			LoadContent();
+			AssignmentReminder.CloseTimer.Stop();
+		}
+
+		public void LoadContent()
+		{
 			int count = 0;
 			string textFormat = "MM/dd/yyyy hh:mm:ss tt";
 			foreach ( Assignment assignment in AssignmentReminder.MainFile.AllAssignments )
@@ -69,14 +75,6 @@ namespace AssignmentReminder
 				AssignmentReminder.ListWindow = this;
 				FormClosed += delegate { AssignmentReminder.ListWindow = null; };
 			}
-
-			sort = new ListViewColumnSorter();
-			listView.ListViewItemSorter = sort;
-			sort.SortColumn = 1; // Sorts the due date column to show nearest due dates at the top
-			sort.Order = SortOrder.Ascending;
-			listView.Sort();
-
-			AssignmentReminder.CloseTimer.Stop();
 		}
 
 		private void RegisterEvents()

@@ -37,12 +37,15 @@ namespace AssignmentReminder
 
 		public static void AddAssignment( string name, DateTime due )
 		{
+			int count =  AssignmentReminder.MainFile.AllAssignments.Count;
+			int id = count == 0 ? 0 : AssignmentReminder.MainFile.AllAssignments[count - 1].Id + 1;
 			Assignment assignment = new Assignment {
-				Id = AssignmentReminder.MainFile.AllAssignments.Count + 1,
-				Name = AssignmentList.FormatText( name ),
+				Id = id,
+				Name = name,
 				DueDate = due
 			};
 			AssignmentReminder.MainFile.AllAssignments.Add( assignment );
+			AssignmentReminder.ListWindow?.LoadContent();
 		}
 
 		public static void RemoveAssignment( int id )
@@ -82,6 +85,7 @@ namespace AssignmentReminder
 		public static void RemoveAssignment( Assignment assignment )
 		{
 			AssignmentReminder.MainFile.AllAssignments.Remove( assignment );
+			AssignmentReminder.ListWindow?.LoadContent();
 		}
 	}
 

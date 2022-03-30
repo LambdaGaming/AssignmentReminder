@@ -32,7 +32,6 @@ namespace AssignmentReminder
 			if ( Editing )
 			{
 				ListViewItem selected = AssignmentReminder.ListWindow.listView.SelectedItems[0];
-				selected.Remove();
 				AssignmentFile.RemoveAssignment( AssignmentList.FormatText( selected.Text ) );
 			}
 
