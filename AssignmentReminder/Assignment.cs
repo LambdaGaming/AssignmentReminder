@@ -18,9 +18,9 @@ namespace AssignmentReminder
 				Directory.CreateDirectory( dir );
 
 			if ( !File.Exists( JsonDir ) )
-				File.WriteAllText( JsonDir, "{ AllAssignments:[] }" );
+				File.WriteAllText( JsonDir, "{ \"AllAssignments\":[] }" );
 
-			AssignmentReminder.MainFile = JsonConvert.DeserializeObject<AssignmentFile>( JsonDir );
+			AssignmentReminder.MainFile = JsonConvert.DeserializeObject<AssignmentFile>( File.ReadAllText( JsonDir ) );
 		}
 
 		public static void Save()

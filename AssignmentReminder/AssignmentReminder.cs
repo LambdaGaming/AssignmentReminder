@@ -19,6 +19,7 @@ namespace AssignmentReminder
 		{
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault( false );
+			AssignmentFile.Load();
 
 			notify = new NotifyIcon {
 				Icon = Resources.icon,
@@ -30,7 +31,6 @@ namespace AssignmentReminder
 
 			CloseTimer.Elapsed += TimerEnd;
 			CloseTimer.Start();
-			AssignmentFile.Load();
 
 			Application.ApplicationExit += delegate { notify.Dispose(); };
 			Application.Run();
