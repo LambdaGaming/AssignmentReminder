@@ -25,18 +25,13 @@ namespace AssignmentReminder
 				return;
 			}
 
-			LoadContent();
-			AssignmentReminder.CloseTimer.Stop();
-		}
-
-		public void LoadContent()
-		{
 			int count = 0;
 			string textFormat = "MM/dd/yyyy hh:mm:ss tt";
 			foreach ( Assignment assignment in AssignmentReminder.MainFile.AllAssignments )
 			{
 				ListViewItem item = listView.Items.Add( assignment.Name );
 				item.UseItemStyleForSubItems = false;
+				item.Tag = assignment;
 
 				DateTime date = assignment.DueDate;
 				TimeSpan daysleft = date.Date - DateTime.Today;
@@ -75,6 +70,14 @@ namespace AssignmentReminder
 				AssignmentReminder.ListWindow = this;
 				FormClosed += delegate { AssignmentReminder.ListWindow = null; };
 			}
+
+			sort = new ListViewColumnSorter();
+			listView.ListViewItemSorter = sort;
+			sort.SortColumn = 1; // Sorts the due date column to show nearest due dates at the top
+			sort.Order = SortOrder.Ascending;
+			listView.Sort();
+
+			AssignmentReminder.CloseTimer.Stop();
 		}
 
 		private void RegisterEvents()
@@ -100,17 +103,6 @@ namespace AssignmentReminder
 			listView.Sort();
 		}
 
-		public static string FormatText( string text )
-		{
-			if ( text.StartsWith( "!!!" ) )
-			{
-				string trim = text.Trim( new char[] { '!' } );
-				string nospace = trim.Trim();
-				return nospace;
-			}
-			return text;
-		}
-
 		private void DeleteAssignment()
 		{
 			DialogResult confirm = MessageBox.Show( "Are you sure you want to delete this assignment?", "Confirm Deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Question );
@@ -118,7 +110,7 @@ namespace AssignmentReminder
 			{
 				ListViewItem selected = listView.SelectedItems[0];
 				selected.Remove();
-				AssignmentFile.RemoveAssignment( FormatText( selected.Text ) );
+				AssignmentFile.RemoveAssignment( ( ( Assignment ) selected.Tag ).Id );
 				AssignmentFile.Save();
 			}
 		}

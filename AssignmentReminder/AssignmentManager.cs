@@ -23,25 +23,10 @@ namespace AssignmentReminder
 			DateTime timevalue = TimeChooser.Value;
 			DateTime timeset = new DateTime( dayvalue.Year, dayvalue.Month, dayvalue.Day, timevalue.Hour, timevalue.Minute, timevalue.Second );
 
-			if ( NameBox.Text.Contains( "!" ) )
-			{
-				MessageBox.Show( "The character '!' is not allowed. Please remove it and try again.", "Illegal character", MessageBoxButtons.OK, MessageBoxIcon.Error );
-				return;
-			}
-
 			if ( Editing )
 			{
 				ListViewItem selected = AssignmentReminder.ListWindow.listView.SelectedItems[0];
-				AssignmentFile.RemoveAssignment( AssignmentList.FormatText( selected.Text ) );
-			}
-
-			foreach ( Assignment assignment in AssignmentReminder.MainFile.AllAssignments )
-			{
-				if ( assignment.Name == NameBox.Text )
-				{
-					MessageBox.Show( "An assignment with this name already exists. Please choose a different name.", "Name already taken", MessageBoxButtons.OK, MessageBoxIcon.Error );
-					return;
-				}
+				AssignmentFile.RemoveAssignment( ( ( Assignment ) selected.Tag ).Id );
 			}
 
 			try

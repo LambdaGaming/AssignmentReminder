@@ -3,7 +3,8 @@ using System.Windows.Forms;
 
 namespace AssignmentReminder
 {
-	class ListViewColumnSorter : IComparer
+	// From https://docs.microsoft.com/en-us/troubleshoot/developer/visualstudio/csharp/general/sort-listview-by-column
+	public class ListViewColumnSorter : IComparer
 	{
 		private int ColumnToSort;
 		private SortOrder OrderOfSort;

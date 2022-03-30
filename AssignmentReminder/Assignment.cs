@@ -45,7 +45,6 @@ namespace AssignmentReminder
 				DueDate = due
 			};
 			AssignmentReminder.MainFile.AllAssignments.Add( assignment );
-			AssignmentReminder.ListWindow?.LoadContent();
 		}
 
 		public static void RemoveAssignment( int id )
@@ -65,27 +64,9 @@ namespace AssignmentReminder
 			}
 		}
 
-		public static void RemoveAssignment( string name )
-		{
-			Assignment removed = null;
-			foreach ( Assignment assignment in AssignmentReminder.MainFile.AllAssignments )
-			{
-				if ( assignment.Name == name )
-				{
-					removed = assignment;
-				}
-			}
-
-			if ( removed != null )
-			{
-				RemoveAssignment( removed );
-			}
-		}
-
 		public static void RemoveAssignment( Assignment assignment )
 		{
 			AssignmentReminder.MainFile.AllAssignments.Remove( assignment );
-			AssignmentReminder.ListWindow?.LoadContent();
 		}
 	}
 
