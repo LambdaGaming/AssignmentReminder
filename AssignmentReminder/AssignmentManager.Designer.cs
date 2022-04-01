@@ -131,8 +131,8 @@
 		private System.Windows.Forms.Label label3;
 		public System.Windows.Forms.TextBox NameBox;
 		public System.Windows.Forms.Button AddButton;
-		private System.Windows.Forms.DateTimePicker DateChooser;
-		private System.Windows.Forms.DateTimePicker TimeChooser;
+		public System.Windows.Forms.DateTimePicker DateChooser;
+		public System.Windows.Forms.DateTimePicker TimeChooser;
 	}
 }
 

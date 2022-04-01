@@ -134,7 +134,9 @@ namespace AssignmentReminder
 					add.Editing = true;
 					add.Text = "Edit Assignment";
 					add.AddButton.Text = "Confirm Changes";
-					add.NameBox.Text = selected.Text;
+					add.NameBox.Text = ( ( Assignment ) selected.Tag ).Name;
+					add.DateChooser.Value = ( ( Assignment ) selected.Tag ).DueDate;
+					add.TimeChooser.Value = ( ( Assignment ) selected.Tag ).DueDate;
 					add.ShowDialog();
 				} );
 				menu.Show( this, PointToClient( Cursor.Position ) );
