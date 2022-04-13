@@ -12,6 +12,8 @@ namespace AssignmentReminder
 			InitializeComponent();
 			TimeChooser.CustomFormat = "hh:mm:ss tt";
 			TimeChooser.Format = DateTimePickerFormat.Custom;
+			DateTime now = DateTime.Now;
+			TimeChooser.Value = new DateTime( now.Year, now.Month, now.Day, 23, 59, 59 );
 			AssignmentReminder.CloseTimer.Stop();
 			AssignmentReminder.ManagerWindow = this;
 			FormClosed += delegate { AssignmentReminder.ManagerWindow = null; };
