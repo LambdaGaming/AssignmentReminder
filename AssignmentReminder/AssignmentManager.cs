@@ -40,7 +40,7 @@ namespace AssignmentReminder
 			}
 			catch( Exception ex )
 			{
-				MessageBox.Show( "Something went wrong while creating the assignment: " + ex, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
+				MessageBox.Show( "Something went wrong while creating the assignment: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
 			}
 		}
 	}
