@@ -1,5 +1,5 @@
 # Assignment Reminder
- Program to help keep school work organized. Works best if you have it set to run when you log into your computer.
+ (NO LONGER BEING MAINTAINED) Program to help keep school work organized. Works best if you have it set to run when you log into your computer.
  
  Uses Newtonsoft.Json - Copyright (c) 2007 James Newton-King
  
